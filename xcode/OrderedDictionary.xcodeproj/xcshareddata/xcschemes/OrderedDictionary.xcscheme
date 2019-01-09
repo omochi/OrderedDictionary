@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "9999"
+   LastUpgradeVersion = "1010"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OrderedDictionary::OrderedDictionary"
+               BlueprintIdentifier = "D68BB2B221E64B7F00B054F1"
                BuildableName = "OrderedDictionary.framework"
                BlueprintName = "OrderedDictionary"
                ReferencedContainer = "container:OrderedDictionary.xcodeproj">
@@ -32,13 +32,22 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OrderedDictionary::OrderedDictionaryTests"
+               BlueprintIdentifier = "D68BB2C621E64CFA00B054F1"
                BuildableName = "OrderedDictionaryTests.xctest"
                BlueprintName = "OrderedDictionaryTests"
                ReferencedContainer = "container:OrderedDictionary.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "D68BB2B221E64B7F00B054F1"
+            BuildableName = "OrderedDictionary.framework"
+            BlueprintName = "OrderedDictionary"
+            ReferencedContainer = "container:OrderedDictionary.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -55,7 +64,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "OrderedDictionary::OrderedDictionary"
+            BlueprintIdentifier = "D68BB2B221E64B7F00B054F1"
             BuildableName = "OrderedDictionary.framework"
             BlueprintName = "OrderedDictionary"
             ReferencedContainer = "container:OrderedDictionary.xcodeproj">
@@ -70,6 +79,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "D68BB2B221E64B7F00B054F1"
+            BuildableName = "OrderedDictionary.framework"
+            BlueprintName = "OrderedDictionary"
+            ReferencedContainer = "container:OrderedDictionary.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
