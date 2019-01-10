@@ -116,7 +116,7 @@ extension OrderedDictionaryObject {
                 return
             }
             
-            insertAtEnd(newValue, key: key)
+            insert(newValue, key: key, before: endKey)
         }
     }
     
@@ -143,40 +143,40 @@ extension OrderedDictionaryObject {
         }
     }
 
-    public func insertAtStart(_ value: Value, key: Key) {
-        remove(for: key)
-        _insert(value, key: key, at: keyList.startIndex)
-    }
-    
-    public func insertAtEnd(_ value: Value, key: Key) {
-        remove(for: key)
-        _insert(value, key: key, at: keyList.endIndex)
-    }
-    
-    public func insert(_ value: Value, key: Key, before rightKey: Key) {
-        remove(for: key)
-        
-        guard let rightKeyEntry = dictionary[rightKey] else {
-            preconditionFailure("key not found")
+    public func insert(_ value: Value, key: Key, before rightKey: Key?) {
+        if let rightKey = rightKey {
+            remove(for: rightKey)
         }
         
-        _insert(value, key: key, at: rightKeyEntry.keyListIndex)
+        let rightIndex = self.index(for: rightKey)
+        _insert(value, key: key, before: rightIndex)
     }
     
-    public func insert(_ value: Value, key: Key, after leftKey: Key) {
-        remove(for: key)
-        
-        guard let leftKeyEntry = dictionary[leftKey] else {
-            preconditionFailure("key not found")
-        }
-        
-        _insert(value, key: key, at: keyList.index(after: leftKeyEntry.keyListIndex))
-    }
-    
-    private func _insert(_ value: Value, key: Key, at index: KeyList.Index) {
-        let kli = keyList.insert(key, at: index)
-        let entry = Entry(value: value, keyListIndex: kli)
+    private func _insert(_ value: Value, key: Key, before rightIndex: Index) {
+        let rightKeyListIndex = self.keyListIndex(for: rightIndex)
+        let keyListIndex = keyList.insert(key, at: rightKeyListIndex)
+        let entry = Entry(value: value, keyListIndex: keyListIndex)
         dictionary[key] = entry
+    }
+    
+    public var startKey: Key? {
+        return self.startIndex.key
+    }
+    
+    public var endKey: Key? {
+        return self.endIndex.key
+    }
+    
+    public func key(after key: Key?) -> Key? {
+        let index = self.index(for: key)
+        let nextIndex = self.index(after: index)
+        return nextIndex.key
+    }
+    
+    public func key(before key: Key?) -> Key? {
+        let index = self.index(for: key)
+        let prevIndex = self.index(before: index)
+        return prevIndex.key
     }
     
     public func copy() -> OrderedDictionaryObject<Key, Value> {
@@ -222,10 +222,7 @@ extension OrderedDictionaryObject : Collection {
         guard let key = index.key else {
             return keyList.endIndex
         }
-        guard let entry = dictionary[key] else {
-            preconditionFailure("invalid index")
-        }
-        return entry.keyListIndex
+        return keyListIndex(for: key)
     }
     
     private func index(for keyListIndex: KeyList.Index) -> Index {
@@ -234,6 +231,20 @@ extension OrderedDictionaryObject : Collection {
         }
         let key = keyList[keyListIndex]
         return Index(owner: self, key: key)
+    }
+    
+    public func index(for key: Key?) -> Index {
+        let keyListIndex = self.keyListIndex(for: key)
+        return index(for: keyListIndex)
+    }
+    
+    private func keyListIndex(for key: Key?) -> KeyList.Index {
+        guard let key = key,
+            let entry = dictionary[key] else
+        {
+            return keyList.endIndex
+        }
+        return entry.keyListIndex
     }
     
     public var count: Int {
