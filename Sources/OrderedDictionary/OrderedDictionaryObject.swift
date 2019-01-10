@@ -1,7 +1,7 @@
-public class OrderedDictionary<Key, Value> where Key : Hashable {
+public class OrderedDictionaryObject<Key, Value> where Key : Hashable {
     public typealias Element = (key: Key, value: Value)
     
-    public typealias Index = LinkedList<Key>.Index
+    public typealias Index = LinkedListObject<Key>.Index
     
     internal struct Entry {
         public var value: Value
@@ -16,11 +16,11 @@ public class OrderedDictionary<Key, Value> where Key : Hashable {
     }
 
     internal var dictionary: Dictionary<Key, Entry>
-    internal let keyList: LinkedList<Key>
+    internal let keyList: LinkedListObject<Key>
     
     public init() {
         self.dictionary = [:]
-        self.keyList = LinkedList()
+        self.keyList = LinkedListObject()
     }
 }
 
@@ -28,7 +28,7 @@ internal enum _MergeError : Error {
     case keyCollision
 }
 
-extension OrderedDictionary {
+extension OrderedDictionaryObject {
     public convenience init<S>(uniqueKeysWithValues keysAndValues: S)
         where S : Sequence, S.Element == (Key, Value)
     {
@@ -139,12 +139,12 @@ extension OrderedDictionary {
         dictionary[key] = entry
     }
     
-    public func copy() -> OrderedDictionary<Key, Value> {
-        return OrderedDictionary(uniqueKeysWithValues: map { ($0, $1) })
+    public func copy() -> OrderedDictionaryObject<Key, Value> {
+        return OrderedDictionaryObject(uniqueKeysWithValues: map { ($0, $1) })
     }
 }
 
-extension OrderedDictionary : Collection {
+extension OrderedDictionaryObject : Collection {
     public subscript(position: Index) -> (key: Key, value: Value) {
         let key = keyList[position]
         let value = self[key]!
@@ -168,7 +168,7 @@ extension OrderedDictionary : Collection {
     }
 }
 
-extension OrderedDictionary : BidirectionalCollection {
+extension OrderedDictionaryObject : BidirectionalCollection {
     public func index(before i: Index) -> Index {
         return keyList.index(before: i)
     }
