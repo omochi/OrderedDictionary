@@ -97,4 +97,23 @@ extension LinkedList : Collection {
 extension LinkedList : BidirectionalCollection {}
 extension LinkedList : MutableCollection {}
 
+extension LinkedList : Decodable where Element : Decodable {
+    public init(from decoder: Decoder) throws {
+        self.init()
+        
+        var c = try decoder.unkeyedContainer()
+        while !c.isAtEnd {
+            let e = try c.decode(Element.self)
+            self.append(e)
+        }
+    }
+}
 
+extension LinkedList : Encodable where Element : Encodable {
+    public func encode(to encoder: Encoder) throws {
+        var c = encoder.unkeyedContainer()
+        for e in self {
+            try c.encode(e)
+        }
+    }
+}

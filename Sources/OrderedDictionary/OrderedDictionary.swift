@@ -132,3 +132,42 @@ extension OrderedDictionary : Collection {
 }
 
 extension OrderedDictionary : BidirectionalCollection {}
+
+extension OrderedDictionary {
+    public struct StringCodingKey : CodingKey {
+        public var stringValue: String
+
+        public init(_ value: String) {
+            self.stringValue = value
+        }
+        
+        public init(stringValue: String) {
+            self.init(stringValue)
+        }
+        
+        public var intValue: Int? { return nil }
+        public init?(intValue: Int) { return nil }
+    }
+}
+
+extension OrderedDictionary : Decodable where Key == String, Value : Decodable {
+    public init(from decoder: Decoder) throws {
+        self.init()
+        
+        let c = try decoder.container(keyedBy: StringCodingKey.self)
+        let keys = c.allKeys
+        for key in keys {
+            let value = try c.decode(Value.self, forKey: key)
+            self[key.stringValue] = value
+        }
+    }
+}
+
+extension OrderedDictionary : Encodable where Key == String, Value : Encodable {
+    public func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: StringCodingKey.self)
+        for (key, value) in self {
+            try c.encode(value, forKey: StringCodingKey(key))
+        }
+    }
+}
