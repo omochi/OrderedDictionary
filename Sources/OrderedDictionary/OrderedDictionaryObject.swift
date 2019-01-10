@@ -1,19 +1,16 @@
 public class OrderedDictionaryObject<Key, Value> where Key : Hashable {
     public typealias Element = (key: Key, value: Value)
     
+    internal typealias KeyList = LinkedListObject<Key>
+    
     public struct Index {
-        public weak var owner: OrderedDictionaryObject?
-        public var key: Key?
+        internal var keyListIndex: KeyList.Index
         
-        public init(owner: OrderedDictionaryObject,
-                    key: Key?)
+        internal init(keyListIndex: KeyList.Index)
         {
-            self.owner = owner
-            self.key = key
+            self.keyListIndex = keyListIndex
         }
     }
-    
-    internal typealias KeyList = LinkedListObject<Key>
     
     internal struct Entry {
         public var value: Value
@@ -44,35 +41,14 @@ extension OrderedDictionaryObject.Index : Comparable {
     public static func == (a: OrderedDictionaryObject.Index,
                            b: OrderedDictionaryObject.Index) -> Bool
     {
-        checkComparablePair(a, b)
-        return a.key == b.key
+        return a.keyListIndex == b.keyListIndex
     }
     
     public static func < (a: OrderedDictionaryObject.Index,
                           b: OrderedDictionaryObject.Index) -> Bool
     {
-        checkComparablePair(a, b)
-        let akli = a.owner!.keyListIndex(for: a)
-        let bkli = b.owner!.keyListIndex(for: b)
-        return akli < bkli
+        return a.keyListIndex < b.keyListIndex
     }
-    
-    private static func checkComparablePair(_ a: OrderedDictionaryObject.Index,
-                                            _ b: OrderedDictionaryObject.Index)
-    {
-        guard let aow = a.owner else {
-            preconditionFailure("no owner index")
-        }
-        
-        guard let bow = b.owner else {
-            preconditionFailure("no owner index")
-        }
-        
-        guard aow === bow else {
-            preconditionFailure("uncomparable index pair")
-        }
-    }
-    
 }
 
 extension OrderedDictionaryObject {
@@ -124,6 +100,7 @@ extension OrderedDictionaryObject {
         guard let entry = dictionary[key] else {
             return
         }
+        
         dictionary[key] = nil
         keyList.remove(at: entry.keyListIndex)
     }
@@ -148,35 +125,34 @@ extension OrderedDictionaryObject {
             remove(for: rightKey)
         }
         
-        let rightIndex = self.index(for: rightKey)
-        _insert(value, key: key, before: rightIndex)
+        let rightKeyListIndex = self.keyListIndex(of: rightKey)
+        _insert(value, key: key, before: rightKeyListIndex)
     }
     
-    private func _insert(_ value: Value, key: Key, before rightIndex: Index) {
-        let rightKeyListIndex = self.keyListIndex(for: rightIndex)
+    private func _insert(_ value: Value, key: Key, before rightKeyListIndex: KeyList.Index) {
         let keyListIndex = keyList.insert(key, at: rightKeyListIndex)
         let entry = Entry(value: value, keyListIndex: keyListIndex)
         dictionary[key] = entry
     }
     
     public var startKey: Key? {
-        return self.startIndex.key
+        return self.key(for: keyList.startIndex)
     }
     
     public var endKey: Key? {
-        return self.endIndex.key
+        return self.key(for: keyList.endIndex)
     }
     
     public func key(after key: Key?) -> Key? {
-        let index = self.index(for: key)
-        let nextIndex = self.index(after: index)
-        return nextIndex.key
+        var keyListIndex = self.keyListIndex(of: key)
+        keyListIndex = self.keyList.index(after: keyListIndex)
+        return self.key(for: keyListIndex)
     }
     
     public func key(before key: Key?) -> Key? {
-        let index = self.index(for: key)
-        let prevIndex = self.index(before: index)
-        return prevIndex.key
+        var keyListIndex = self.keyListIndex(of: key)
+        keyListIndex = self.keyList.index(before: keyListIndex)
+        return self.key(for: keyListIndex)
     }
     
     public func copy() -> OrderedDictionaryObject<Key, Value> {
@@ -186,15 +162,13 @@ extension OrderedDictionaryObject {
 
 extension OrderedDictionaryObject : Collection {
     public subscript(position: Index) -> (key: Key, value: Value) {
-        checkValidIndex(position)
-        
-        guard let key = position.key,
-            let entry = dictionary[key] else
+        let keyListIndex = self.keyListIndex(of: position)
+        guard let key = self.key(for: keyListIndex),
+            let value = self[key] else
         {
             preconditionFailure("Index out of range")
         }
-        
-        return (key: key, value: entry.value)
+        return (key: key, value: value)
     }
     
     public var startIndex: Index {
@@ -205,40 +179,35 @@ extension OrderedDictionaryObject : Collection {
         return self.index(for: keyList.endIndex)
     }
     
+    public var count: Int {
+        return keyList.count
+    }
+    
     public func index(after i: Index) -> Index {
-        let keyListIndex = self.keyListIndex(for: i)
-        let nextKeyListIndex = keyList.index(after: keyListIndex)
-        return self.index(for: nextKeyListIndex)
+        var keyListIndex = self.keyListIndex(of: i)
+        keyListIndex = keyList.index(after: keyListIndex)
+        return self.index(for: keyListIndex)
     }
     
     public func index(before i: Index) -> Index {
-        let keyListIndex = self.keyListIndex(for: i)
-        let prevKeyListIndex = keyList.index(before: keyListIndex)
-        return self.index(for: prevKeyListIndex)
+        var keyListIndex = self.keyListIndex(of: i)
+        keyListIndex = keyList.index(before: keyListIndex)
+        return self.index(for: keyListIndex)
     }
-    
-    private func keyListIndex(for index: Index) -> KeyList.Index {
-        checkValidIndex(index)
-        guard let key = index.key else {
-            return keyList.endIndex
-        }
-        return keyListIndex(for: key)
+
+    // Index <-> KeyList.Index
+
+    private func keyListIndex(of index: Index) -> KeyList.Index {
+        return index.keyListIndex
     }
-    
+
     private func index(for keyListIndex: KeyList.Index) -> Index {
-        if keyListIndex == keyList.endIndex {
-            return Index(owner: self, key: nil)
-        }
-        let key = keyList[keyListIndex]
-        return Index(owner: self, key: key)
+        return Index(keyListIndex: keyListIndex)
     }
     
-    public func index(for key: Key?) -> Index {
-        let keyListIndex = self.keyListIndex(for: key)
-        return index(for: keyListIndex)
-    }
+    // KeyList.Index <-> Key?
     
-    private func keyListIndex(for key: Key?) -> KeyList.Index {
+    private func keyListIndex(of key: Key?) -> KeyList.Index {
         guard let key = key,
             let entry = dictionary[key] else
         {
@@ -247,12 +216,11 @@ extension OrderedDictionaryObject : Collection {
         return entry.keyListIndex
     }
     
-    public var count: Int {
-        return keyList.count
-    }
-    
-    private func checkValidIndex(_ index: Index) {
-        precondition(self === index.owner, "index for other object")
+    private func key(for keyListIndex: KeyList.Index) -> Key? {
+        if keyListIndex == keyList.endIndex {
+            return nil
+        }
+        return keyList[keyListIndex]
     }
 }
 
