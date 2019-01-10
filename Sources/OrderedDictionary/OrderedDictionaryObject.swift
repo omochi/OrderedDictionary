@@ -41,15 +41,15 @@ internal enum _MergeError : Error {
 }
 
 extension OrderedDictionaryObject.Index : Comparable {
-    public static func < (a: OrderedDictionaryObject.Index,
-                          b: OrderedDictionaryObject.Index) -> Bool
+    public static func == (a: OrderedDictionaryObject.Index,
+                           b: OrderedDictionaryObject.Index) -> Bool
     {
         checkComparablePair(a, b)
         return a.key == b.key
     }
     
-    public static func == (a: OrderedDictionaryObject.Index,
-                           b: OrderedDictionaryObject.Index) -> Bool
+    public static func < (a: OrderedDictionaryObject.Index,
+                          b: OrderedDictionaryObject.Index) -> Bool
     {
         checkComparablePair(a, b)
         let akli = a.owner!.keyListIndex(for: a)
