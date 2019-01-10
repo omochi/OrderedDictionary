@@ -14,6 +14,8 @@
 		D6F9AC1221E6E52000AB5C0A /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9AC1121E6E52000AB5C0A /* LinkedList.swift */; };
 		D6F9AC1421E6E91C00AB5C0A /* LinkedListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9AC1321E6E91C00AB5C0A /* LinkedListTests.swift */; };
 		D6F9AC1621E6F26A00AB5C0A /* OrderedDictionaryObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9AC1521E6F26A00AB5C0A /* OrderedDictionaryObjectTests.swift */; };
+		D6F9AC1821E748C800AB5C0A /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9AC1721E748C800AB5C0A /* OrderedDictionary.swift */; };
+		D6F9AC1A21E74B2D00AB5C0A /* OrderedDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9AC1921E74B2D00AB5C0A /* OrderedDictionaryTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +40,8 @@
 		D6F9AC1121E6E52000AB5C0A /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 		D6F9AC1321E6E91C00AB5C0A /* LinkedListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedListTests.swift; sourceTree = "<group>"; };
 		D6F9AC1521E6F26A00AB5C0A /* OrderedDictionaryObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedDictionaryObjectTests.swift; sourceTree = "<group>"; };
+		D6F9AC1721E748C800AB5C0A /* OrderedDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
+		D6F9AC1921E74B2D00AB5C0A /* OrderedDictionaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedDictionaryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +96,7 @@
 				D68BB2BF21E64BA700B054F1 /* LinkedListObject.swift */,
 				D6F9AC1121E6E52000AB5C0A /* LinkedList.swift */,
 				D68BB2C021E64BA700B054F1 /* OrderedDictionaryObject.swift */,
+				D6F9AC1721E748C800AB5C0A /* OrderedDictionary.swift */,
 			);
 			name = src;
 			path = ../../Sources/OrderedDictionary;
@@ -113,6 +118,7 @@
 				D68BB2D421E64D2000B054F1 /* LinkedListObjectTests.swift */,
 				D6F9AC1321E6E91C00AB5C0A /* LinkedListTests.swift */,
 				D6F9AC1521E6F26A00AB5C0A /* OrderedDictionaryObjectTests.swift */,
+				D6F9AC1921E74B2D00AB5C0A /* OrderedDictionaryTests.swift */,
 			);
 			name = src;
 			path = ../../Tests/OrderedDictionaryTests;
@@ -228,6 +234,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6F9AC1221E6E52000AB5C0A /* LinkedList.swift in Sources */,
+				D6F9AC1821E748C800AB5C0A /* OrderedDictionary.swift in Sources */,
 				D68BB2C121E64BA700B054F1 /* LinkedListObject.swift in Sources */,
 				D68BB2C221E64BA700B054F1 /* OrderedDictionaryObject.swift in Sources */,
 			);
@@ -238,6 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6F9AC1421E6E91C00AB5C0A /* LinkedListTests.swift in Sources */,
+				D6F9AC1A21E74B2D00AB5C0A /* OrderedDictionaryTests.swift in Sources */,
 				D68BB2D621E64D2000B054F1 /* LinkedListObjectTests.swift in Sources */,
 				D6F9AC1621E6F26A00AB5C0A /* OrderedDictionaryObjectTests.swift in Sources */,
 			);

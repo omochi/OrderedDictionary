@@ -2,40 +2,31 @@ import XCTest
 
 import OrderedDictionary
 
-internal struct KV<K, V> {
-    public var k: K
-    public var v: V
-    
-    public init(_ k: K, _ v: V) {
-        self.k = k
-        self.v = v
-    }
-}
-
-extension KV : Equatable where K : Equatable, V : Equatable {}
-
-class OrderedDictionaryObjectTests: XCTestCase {
+class OrderedDictionaryTests: XCTestCase {
     func testSubscript() {
-        let a = OrderedDictionaryObject<String, Int>()
-        XCTAssertEqual(a.count, 0)
+        var a = OrderedDictionary<String, Int>()
         assert(a, [])
         
         a["a"] = 1
-        XCTAssertEqual(a.count, 1)
         assert(a, [("a", 1)])
         
         a["b"] = 2
-        XCTAssertEqual(a.count, 2)
         assert(a, [("a", 1), ("b", 2)])
+
+        let b = a
         
         a["c"] = 3
         assert(a, [("a", 1), ("b", 2), ("c", 3)])
+        assert(b, [("a", 1), ("b", 2)])
         
         a["a"] = 4
         assert(a, [("a", 4), ("b", 2), ("c", 3)])
         
+        let c = a
+        
         a["b"] = nil
         assert(a, [("a", 4), ("c", 3)])
+        assert(c, [("a", 4), ("b", 2), ("c", 3)])
         
         a["c"] = nil
         assert(a, [("a", 4)])
@@ -48,16 +39,19 @@ class OrderedDictionaryObjectTests: XCTestCase {
     }
     
     func testEdit() {
-        let a = OrderedDictionaryObject<String, Int>()
+        var a = OrderedDictionary<String, Int>()
         assert(a, [])
         
         a["b"] = 1
         a["c"] = 2
         a["f"] = 3
         assert(a, [("b", 1), ("c", 2), ("f", 3)])
-
+        
+        let b = a
+        
         a.insert(4, for: "d", before: "f")
         assert(a, [("b", 1), ("c", 2), ("d", 4), ("f", 3)])
+        assert(b, [("b", 1), ("c", 2), ("f", 3)])
         
         a.insert(5, for: "e", after: "d")
         assert(a, [("b", 1), ("c", 2), ("d", 4), ("e", 5), ("f", 3)])
@@ -65,12 +59,15 @@ class OrderedDictionaryObjectTests: XCTestCase {
         a.insert(6, for: "g", before: nil)
         assert(a, [("b", 1), ("c", 2), ("d", 4), ("e", 5), ("f", 3), ("g", 6)])
         
+        let c = a
+        
         a["b"] = nil
         assert(a, [("c", 2), ("d", 4), ("e", 5), ("f", 3), ("g", 6)])
+        assert(c, [("b", 1), ("c", 2), ("d", 4), ("e", 5), ("f", 3), ("g", 6)])
         
         a["g"] = nil
         assert(a, [("c", 2), ("d", 4), ("e", 5), ("f", 3)])
-
+        
         a["d"] = nil
         assert(a, [("c", 2), ("e", 5), ("f", 3)])
         
@@ -81,7 +78,7 @@ class OrderedDictionaryObjectTests: XCTestCase {
         assert(a, [("e", 5), ("c", 8), ("f", 3)])
     }
     
-    private func keysByIteration<T>(_ dict: OrderedDictionaryObject<String, T>) -> [String] {
+    private func keysByIteration<T>(_ dict: OrderedDictionary<String, T>) -> [String] {
         var ret: [String] = []
         var k = dict.startKey
         while k != dict.endKey {
@@ -90,7 +87,7 @@ class OrderedDictionaryObjectTests: XCTestCase {
         }
         return ret
     }
-    private func reverseKeysByIteration<T>(_ dict: OrderedDictionaryObject<String, T>) -> [String] {
+    private func reverseKeysByIteration<T>(_ dict: OrderedDictionary<String, T>) -> [String] {
         var ret: [String] = []
         var k = dict.endKey
         while true {
@@ -104,8 +101,8 @@ class OrderedDictionaryObjectTests: XCTestCase {
         }
         return ret
     }
-
-    private func assert<T>(_ dict: OrderedDictionaryObject<String, T>,
+    
+    private func assert<T>(_ dict: OrderedDictionary<String, T>,
                            _ expected: [(String, T)],
                            file: StaticString = #file,
                            line: UInt = #line)

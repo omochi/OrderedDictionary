@@ -27,9 +27,16 @@ public class OrderedDictionaryObject<Key, Value> where Key : Hashable {
     internal var dictionary: Dictionary<Key, Entry>
     internal let keyList: KeyList
     
-    public init() {
-        self.dictionary = [:]
-        self.keyList = KeyList()
+    public convenience init() {
+        self.init(dictionary: Dictionary(),
+                  keyList: KeyList())
+    }
+    
+    internal init(dictionary: Dictionary<Key, Entry>,
+                  keyList: KeyList)
+    {
+        self.dictionary = dictionary
+        self.keyList = keyList
     }
 }
 
@@ -92,7 +99,7 @@ extension OrderedDictionaryObject {
                 return
             }
             
-            insert(newValue, key: key, before: endKey)
+            insert(newValue, for: key, before: endKey)
         }
     }
     
@@ -120,16 +127,20 @@ extension OrderedDictionaryObject {
         }
     }
 
-    public func insert(_ value: Value, key: Key, before rightKey: Key?) {
-        if let rightKey = rightKey {
-            remove(for: rightKey)
-        }
+    public func insert(_ value: Value, for key: Key, before rightKey: Key?) {
+        remove(for: key)
         
         let rightKeyListIndex = self.keyListIndex(of: rightKey)
-        _insert(value, key: key, before: rightKeyListIndex)
+        _insert(value, for: key, before: rightKeyListIndex)
     }
     
-    private func _insert(_ value: Value, key: Key, before rightKeyListIndex: KeyList.Index) {
+    public func insert(_ value: Value, for key: Key, after leftKey: Key) {
+        let rightKey = self.key(after: leftKey)
+        
+        insert(value, for: key, before: rightKey)
+    }
+    
+    private func _insert(_ value: Value, for key: Key, before rightKeyListIndex: KeyList.Index) {
         let keyListIndex = keyList.insert(key, at: rightKeyListIndex)
         let entry = Entry(value: value, keyListIndex: keyListIndex)
         dictionary[key] = entry
@@ -155,8 +166,23 @@ extension OrderedDictionaryObject {
         return self.key(for: keyListIndex)
     }
     
-    public func copy() -> OrderedDictionaryObject<Key, Value> {
-        return OrderedDictionaryObject(uniqueKeysWithValues: map { ($0, $1) })
+    public func copy(indices oldIndices: inout [Index]) -> OrderedDictionaryObject<Key, Value> {
+        let newObject = OrderedDictionaryObject()
+        for (k, v) in self {
+            newObject[k] = v
+        }
+        
+        var newIndices: [Index] = []
+        for oldIndex in oldIndices {
+            let oldKeyListIndex = self.keyListIndex(of: oldIndex)
+            let key = self.key(for: oldKeyListIndex)
+            let newKeyListIndex = newObject.keyListIndex(of: key)
+            let newIndex = newObject.index(for: newKeyListIndex)
+            newIndices.append(newIndex)
+        }
+        oldIndices = newIndices
+        
+        return newObject
     }
 }
 
@@ -205,7 +231,7 @@ extension OrderedDictionaryObject : Collection {
         return Index(keyListIndex: keyListIndex)
     }
     
-    // KeyList.Index <-> Key?
+    // Key? <-> KeyList.Index
     
     private func keyListIndex(of key: Key?) -> KeyList.Index {
         guard let key = key,
