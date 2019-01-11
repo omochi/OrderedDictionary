@@ -56,6 +56,11 @@ extension OrderedDictionary {
         self.init(object: object)
     }
     
+    public init(_ keyAndValues: KeyValuePairs<Key, Value>) {
+        let object = Object(keyAndValues)
+        self.init(object: object)
+    }
+    
     public var keys: [Key] {
         return object.keys
     }

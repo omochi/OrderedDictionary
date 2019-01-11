@@ -76,6 +76,14 @@ extension OrderedDictionaryObject {
         try merge(keysAndValues, uniquingKeysWith: combine)
     }
     
+    public convenience init(_ keyAndValues: KeyValuePairs<Key, Value>) {
+        self.init()
+        
+        for (k, v) in keyAndValues {
+            self[k] = v
+        }
+    }
+    
     public var keys: [Key] {
         return keyList.map { $0 }
     }

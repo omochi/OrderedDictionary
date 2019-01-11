@@ -78,6 +78,15 @@ class OrderedDictionaryTests: XCTestCase {
         assert(a, [("e", 5), ("c", 8), ("f", 3)])
     }
     
+    func testLiteral() {
+        let a = OrderedDictionary([
+            "a": 1,
+            "b": 2,
+            "c": 3
+            ])
+        assert(a, [("a", 1), ("b", 2), ("c", 3)])
+    }
+    
     private func keysByIteration<T>(_ dict: OrderedDictionary<String, T>) -> [String] {
         var ret: [String] = []
         var k = dict.startKey
