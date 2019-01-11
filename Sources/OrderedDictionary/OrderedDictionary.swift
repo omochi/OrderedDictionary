@@ -171,3 +171,39 @@ extension OrderedDictionary : Encodable where Key == String, Value : Encodable {
         }
     }
 }
+
+extension OrderedDictionary : Equatable where Key : Equatable, Value : Equatable {
+    public static func == (a: OrderedDictionary<Key, Value>, b: OrderedDictionary<Key, Value>) -> Bool {
+        guard a.count == b.count else {
+            return false
+        }
+        
+        var ia = a.startIndex
+        var ib = b.startIndex
+        while ia != a.endIndex {
+            let (ak, av) = a[ia]
+            let (bk, bv) = b[ib]
+            
+            guard ak == bk && av == bv else {
+                return false
+            }
+            
+            ia = a.index(after: ia)
+            ib = b.index(after: ib)
+        }
+        precondition(ib == b.endIndex)
+        
+        return true
+    }
+}
+
+extension OrderedDictionary : Hashable where Key : Hashable, Value : Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(count)
+        
+        for (k, v) in self {
+            hasher.combine(k)
+            hasher.combine(v)
+        }
+    }
+}

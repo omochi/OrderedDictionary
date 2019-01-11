@@ -117,3 +117,37 @@ extension LinkedList : Encodable where Element : Encodable {
         }
     }
 }
+
+extension LinkedList : Equatable where Element : Equatable {
+    public static func == (a: LinkedList<T>, b: LinkedList<T>) -> Bool {
+        guard a.count == b.count else {
+            return false
+        }
+        
+        var ia = a.startIndex
+        var ib = b.startIndex
+        while ia != a.endIndex {
+            let ax = a[ia]
+            let bx = b[ib]
+            
+            guard ax == bx else {
+                return false
+            }
+            
+            ia = a.index(after: ia)
+            ib = b.index(after: ib)
+        }
+        precondition(ib == b.endIndex)
+        
+        return true
+    }
+}
+
+extension LinkedList : Hashable where Element : Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(count)
+        for x in self {
+            hasher.combine(x)
+        }
+    }
+}
