@@ -6,7 +6,7 @@ public class LinkedListObject<T> {
         
         internal weak var owner: LinkedListObject?
         internal var next: Node?
-        internal var previous: Node?
+        internal weak var previous: Node?
         
         internal init(_ value: T,
                       owner: LinkedListObject?)

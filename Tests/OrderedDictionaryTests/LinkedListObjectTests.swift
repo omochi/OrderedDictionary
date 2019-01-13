@@ -84,4 +84,29 @@ class LinkedListObjectTests: XCTestCase {
         
         XCTAssertEqual(revActual, expected.reversed(), file: file, line: line)
     }
+    
+    class Obj {
+        static var count: Int = 0
+        
+        init() {
+            Obj.count += 1
+        }
+        
+        deinit {
+            Obj.count -= 1
+        }
+    }
+    
+    func testLeak() {
+        do {
+            let a = LinkedListObject<Obj>()
+            
+            a.append(Obj())
+            a.append(Obj())
+            
+            XCTAssertEqual(Obj.count, 2)            
+        }
+        
+        XCTAssertEqual(Obj.count, 0)
+    }
 }

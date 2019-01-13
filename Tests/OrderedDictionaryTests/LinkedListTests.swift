@@ -97,5 +97,4 @@ class LinkedListTests: XCTestCase {
         
         XCTAssertEqual(revActual, expected.reversed(), file: file, line: line)
     }
-
 }
