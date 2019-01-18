@@ -192,6 +192,14 @@ extension OrderedDictionaryObject {
         
         return newObject
     }
+    
+    public func mapValues<T>(_ transform: (Value) throws -> T) rethrows -> OrderedDictionaryObject<Key, T> {
+        let c = OrderedDictionaryObject<Key, T>()
+        for (k, v) in self {
+            c[k] = try transform(v)
+        }
+        return c
+    }
 }
 
 extension OrderedDictionaryObject : Collection {

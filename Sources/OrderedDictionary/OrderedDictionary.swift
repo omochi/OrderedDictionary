@@ -108,6 +108,10 @@ extension OrderedDictionary {
     public func key(before key: Key?) -> Key? {
         return object.key(before: key)
     }
+        
+    public func mapValues<T>(_ transform: (Value) throws -> T) rethrows -> OrderedDictionary<Key, T> {
+        return OrderedDictionary<Key, T>(object: try object.mapValues(transform))
+    }
 }
 
 extension OrderedDictionary : Collection {
