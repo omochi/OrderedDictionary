@@ -268,3 +268,8 @@ extension OrderedDictionaryObject : Collection {
 
 extension OrderedDictionaryObject : BidirectionalCollection {}
 
+extension OrderedDictionaryObject : CustomReflectable {
+    public var customMirror: Mirror {
+        return Mirror(self, unlabeledChildren: self, displayStyle: .dictionary)
+    }
+}

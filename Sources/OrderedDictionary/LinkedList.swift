@@ -151,3 +151,9 @@ extension LinkedList : Hashable where Element : Hashable {
         }
     }
 }
+
+extension LinkedList : CustomReflectable {
+    public var customMirror: Mirror {
+        return Mirror(self, unlabeledChildren: self, displayStyle: .collection)
+    }
+}

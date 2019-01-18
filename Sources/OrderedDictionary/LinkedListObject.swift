@@ -296,3 +296,9 @@ extension LinkedListObject : BidirectionalCollection {
 }
 
 extension LinkedListObject : MutableCollection {}
+
+extension LinkedListObject : CustomReflectable {
+    public var customMirror: Mirror {
+        return Mirror(self, unlabeledChildren: self, displayStyle: .collection)
+    }
+}

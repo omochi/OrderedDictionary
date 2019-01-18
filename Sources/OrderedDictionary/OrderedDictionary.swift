@@ -216,3 +216,9 @@ extension OrderedDictionary : Hashable where Key : Hashable, Value : Hashable {
         }
     }
 }
+
+extension OrderedDictionary : CustomReflectable {
+    public var customMirror: Mirror {
+        return Mirror(self, unlabeledChildren: self, displayStyle: .dictionary)
+    }
+}
