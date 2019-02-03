@@ -17,10 +17,8 @@ public struct OrderedDictionary<Key, Value> where Key : Hashable {
 }
 
 extension OrderedDictionary {
-    private mutating func copyIfNeed() {
-        if !isKnownUniquelyReferenced(&object) {
-            self.object = object.copy()
-        }
+    private mutating func copyStorage() {
+        self.object = object.copy()
     }
     
     public init<S>(uniqueKeysWithValues keysAndValues: S)
@@ -52,7 +50,9 @@ extension OrderedDictionary {
             return object[key]
         }
         set {
-            copyIfNeed()
+            if !isKnownUniquelyReferenced(&object) {
+                copyStorage()
+            }
             object[key] = newValue
         }
     }
@@ -61,17 +61,23 @@ extension OrderedDictionary {
                          uniquingKeysWith combine: (Value, Value) throws -> Value) rethrows
         where S : Sequence, S.Element == (Key, Value)
     {
-        copyIfNeed()
+        if !isKnownUniquelyReferenced(&object) {
+            copyStorage()
+        }
         try object.merge(other, uniquingKeysWith: combine)
     }
     
     public mutating func insert(_ value: Value, for key: Key, before rightKey: Key?) {
-        copyIfNeed()
+        if !isKnownUniquelyReferenced(&object) {
+            copyStorage()
+        }
         object.insert(value, for: key, before: rightKey)
     }
     
     public mutating func insert(_ value: Value, for key: Key, after leftKey: Key) {
-        copyIfNeed()
+        if !isKnownUniquelyReferenced(&object) {
+            copyStorage()
+        }
         object.insert(value, for: key, after: leftKey)
     }
     
