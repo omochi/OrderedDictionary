@@ -174,11 +174,16 @@ extension OrderedDictionaryObject {
         return self.key(for: keyListIndex)
     }
     
-    public func copy(indices oldIndices: inout [Index]) -> OrderedDictionaryObject<Key, Value> {
+    public func copy() -> OrderedDictionaryObject<Key, Value> {
         let newObject = OrderedDictionaryObject()
         for (k, v) in self {
             newObject[k] = v
         }
+        return newObject
+    }
+    
+    public func copy(indices oldIndices: inout [Index]) -> OrderedDictionaryObject<Key, Value> {
+        let newObject = copy()
         
         var newIndices: [Index] = []
         for oldIndex in oldIndices {

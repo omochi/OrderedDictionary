@@ -17,28 +17,10 @@ public struct OrderedDictionary<Key, Value> where Key : Hashable {
 }
 
 extension OrderedDictionary {
-    private mutating func copyIfNeed(indices: inout [Index]) {
-        if !isKnownUniquelyReferenced(&object) {
-            self.object = object.copy(indices: &indices)
-        }
-    }
-    
     private mutating func copyIfNeed() {
-        var ixs: [Index] = []
-        copyIfNeed(indices: &ixs)
-    }
-    
-    private mutating func copyIfNeed(indices i0: inout Index) {
-        var ixs: [Index] = [i0]
-        copyIfNeed(indices: &ixs)
-        i0 = ixs[0]
-    }
-    
-    private mutating func copyIfNeed(indices i0: inout Index, _ i1: inout Index) {
-        var ixs: [Index] = [i0, i1]
-        copyIfNeed(indices: &ixs)
-        i0 = ixs[0]
-        i1 = ixs[1]
+        if !isKnownUniquelyReferenced(&object) {
+            self.object = object.copy()
+        }
     }
     
     public init<S>(uniqueKeysWithValues keysAndValues: S)
