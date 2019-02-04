@@ -11,6 +11,7 @@
 		D68BB2C221E64BA700B054F1 /* OrderedDictionaryObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68BB2C021E64BA700B054F1 /* OrderedDictionaryObject.swift */; };
 		D68BB2CC21E64CFA00B054F1 /* OrderedDictionary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68BB2B321E64B7F00B054F1 /* OrderedDictionary.framework */; };
 		D68BB2D621E64D2000B054F1 /* LinkedListObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68BB2D421E64D2000B054F1 /* LinkedListObjectTests.swift */; };
+		D6DFF7AE2208518C006E04FD /* BenchmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DFF7AD2208518C006E04FD /* BenchmarkTests.swift */; };
 		D6F9AC1221E6E52000AB5C0A /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9AC1121E6E52000AB5C0A /* LinkedList.swift */; };
 		D6F9AC1421E6E91C00AB5C0A /* LinkedListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9AC1321E6E91C00AB5C0A /* LinkedListTests.swift */; };
 		D6F9AC1621E6F26A00AB5C0A /* OrderedDictionaryObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F9AC1521E6F26A00AB5C0A /* OrderedDictionaryObjectTests.swift */; };
@@ -35,8 +36,8 @@
 		D68BB2C021E64BA700B054F1 /* OrderedDictionaryObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionaryObject.swift; sourceTree = "<group>"; };
 		D68BB2C721E64CFA00B054F1 /* OrderedDictionaryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OrderedDictionaryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D68BB2CB21E64CFA00B054F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D68BB2D321E64D2000B054F1 /* XCTestManifests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		D68BB2D421E64D2000B054F1 /* LinkedListObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedListObjectTests.swift; sourceTree = "<group>"; };
+		D6DFF7AD2208518C006E04FD /* BenchmarkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkTests.swift; sourceTree = "<group>"; };
 		D6F9AC1121E6E52000AB5C0A /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 		D6F9AC1321E6E91C00AB5C0A /* LinkedListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedListTests.swift; sourceTree = "<group>"; };
 		D6F9AC1521E6F26A00AB5C0A /* OrderedDictionaryObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedDictionaryObjectTests.swift; sourceTree = "<group>"; };
@@ -114,11 +115,11 @@
 		D68BB2D221E64D0D00B054F1 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				D68BB2D321E64D2000B054F1 /* XCTestManifests.swift */,
 				D68BB2D421E64D2000B054F1 /* LinkedListObjectTests.swift */,
 				D6F9AC1321E6E91C00AB5C0A /* LinkedListTests.swift */,
 				D6F9AC1521E6F26A00AB5C0A /* OrderedDictionaryObjectTests.swift */,
 				D6F9AC1921E74B2D00AB5C0A /* OrderedDictionaryTests.swift */,
+				D6DFF7AD2208518C006E04FD /* BenchmarkTests.swift */,
 			);
 			name = src;
 			path = ../../Tests/OrderedDictionaryTests;
@@ -247,6 +248,7 @@
 				D6F9AC1421E6E91C00AB5C0A /* LinkedListTests.swift in Sources */,
 				D6F9AC1A21E74B2D00AB5C0A /* OrderedDictionaryTests.swift in Sources */,
 				D68BB2D621E64D2000B054F1 /* LinkedListObjectTests.swift in Sources */,
+				D6DFF7AE2208518C006E04FD /* BenchmarkTests.swift in Sources */,
 				D6F9AC1621E6F26A00AB5C0A /* OrderedDictionaryObjectTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -457,6 +459,7 @@
 					"@loader_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.omochimetaru.OrderedDictionaryTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -478,6 +481,7 @@
 					"@loader_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.omochimetaru.OrderedDictionaryTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
